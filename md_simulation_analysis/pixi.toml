@@ -1,0 +1,11 @@
+[workspace]
+authors = ["hugolld <hugo.lilong.dong@outlook.com>"]
+channels = ["conda-forge"]
+name = "BIOINFO_Demo_md_simulation_analysis"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+opencadd = "*"

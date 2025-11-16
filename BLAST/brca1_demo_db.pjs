@@ -1,0 +1,22 @@
+{
+  "version": "1.2",
+  "dbname": "brca1_demo_db",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "/Users/hugodong/Documents/ACADEMIC_WORKSPACE/01_TEACHING_PORTFOLIO/Current_Semester_2025-2026-S1/BIOINFO_Bioinfomatics/Lectures/code/BIOINFO_Demo_BLAST/BIOINFO_Demo_BLAST/data/brca1_protein_proper.fasta",
+  "number-of-letters": 185,
+  "number-of-sequences": 1,
+  "last-updated": "2025-11-14T16:14:00",
+  "number-of-volumes": 1,
+  "bytes-total": 148067,
+  "bytes-to-cache": 483,
+  "files": [
+    "brca1_demo_db.pdb",
+    "brca1_demo_db.phr",
+    "brca1_demo_db.pin",
+    "brca1_demo_db.pot",
+    "brca1_demo_db.psq",
+    "brca1_demo_db.ptf",
+    "brca1_demo_db.pto"
+  ]
+}

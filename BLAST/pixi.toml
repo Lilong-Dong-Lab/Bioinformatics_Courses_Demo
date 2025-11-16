@@ -1,0 +1,17 @@
+[workspace]
+authors = ["hugolld <hugo.lilong.dong@outlook.com>"]
+channels = ["conda-forge", "bioconda"]
+name = "BIOINFO_Demo_BLAST"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[dependencies]
+blast = ">=2.15.0"
+python = ">=3.10.0"
+biopython = ">=1.86,<2"
+
+[tasks]
+verify-blast = "blastp -version"
+run-blast = "python scripts/run_blast_cli.py"
+run-remote-blast = "python scripts/remote_blast_demo.py"
+run-biopython-blast = "python scripts/biopython_remote_blast.py"
