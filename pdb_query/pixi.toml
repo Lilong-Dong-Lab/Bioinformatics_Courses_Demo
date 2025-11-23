@@ -1,0 +1,40 @@
+[workspace]
+authors = ["hugolld <hugo.lilong.dong@outlook.com>"]
+channels = ["conda-forge", "bioconda"]
+name = "pdb_query"
+platforms = ["osx-arm64", "linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = ">=3.9"
+
+# Core scientific computing
+pandas = "*"
+matplotlib = "*"
+requests = "*"
+tqdm = "*"
+
+# Web scraping
+beautifulsoup4 = "*"
+
+# Bioinformatics and cheminformatics
+biotite = "*"
+rdkit = "*"
+nglview = "*"
+opencadd = "=1.0.1"
+biopandas = "*"
+mdanalysis = "*"
+jsonschema = "<4.0.0"
+
+# Additional dependencies for opencadd
+bravado = "*"
+
+# Additional utilities for the notebook
+redo = "*"
+requests-cache = "*"
+
+# PyPI dependencies for packages not available through conda-forge
+[pypi-dependencies]
+pypdb = "*"
