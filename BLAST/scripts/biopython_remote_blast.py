@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """
-BioPython Remote BLAST Demo
-============================
+BioPython Remote BLAST Demo (EGFR)
+===================================
 
 This script demonstrates remote BLAST using BioPython's NCBIWWW module.
 This is often more reliable than command-line remote BLAST.
+
+Target: EGFR kinase domain (NSCLC drug target)
 
 Based on official BioPython documentation:
 https://biopython.org/docs/dev/Tutorial/chapter_blast.html#sec-running-www-blast
 
 Author: Bioinformatics Course Demo
 Date: 2025-11-14
+Updated: 2026-03-24 (aligned with lecture materials)
 """
 
 import sys
@@ -152,8 +155,9 @@ def save_results(result_handle, hits_data, timestamp):
 
 def main():
     """Main function to run BioPython BLAST demonstration."""
-    print("🧬 BioPython Remote BLAST Demonstration")
+    print("🧬 BioPython Remote BLAST Demonstration (EGFR)")
     print("=" * 60)
+    print("Target: EGFR kinase domain (NSCLC drug target)")
 
     if not BIOPYTHON_AVAILABLE:
         print("❌ BioPython not available. Please install it first.")
@@ -162,7 +166,7 @@ def main():
     # Load sequence
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_dir = os.path.dirname(script_dir)
-    query_file = os.path.join(project_dir, "data", "brca1_protein_proper.fasta")
+    query_file = os.path.join(project_dir, "data", "egfr_protein.fasta")
 
     sequence = load_sequence(query_file)
     if sequence is None:

@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-BRCA1 BLAST CLI Demo Script
-===========================
+EGFR BLAST CLI Demo Script
+==========================
 
 This script demonstrates how to use the NCBI BLAST+ command-line tools
-to perform BLAST searches on the BRCA1 protein sequence.
+to perform BLAST searches on the EGFR kinase domain sequence.
+
+EGFR (Epidermal Growth Factor Receptor) is a key target for non-small cell
+lung cancer (NSCLC) drugs like gefitinib, erlotinib, and osimertinib.
 
 This script demonstrates:
 1. Local BLAST database setup (optional)
@@ -14,6 +17,7 @@ This script demonstrates:
 
 Author: Bioinformatics Course Demo
 Date: 2025-11-14
+Updated: 2026-03-24 (aligned with lecture materials)
 """
 
 import subprocess
@@ -188,9 +192,10 @@ def main():
     """
     Main function to run the BLAST CLI demonstration.
     """
-    print("🧬 BRCA1 BLAST CLI Demonstration")
+    print("🧬 EGFR BLAST CLI Demonstration")
     print("=" * 60)
     print("This script demonstrates BLAST+ command-line tools for protein analysis")
+    print("Target: EGFR kinase domain (NSCLC drug target)")
 
     # Check BLAST tools
     available_tools = check_blast_tools()
@@ -201,9 +206,9 @@ def main():
     # Define file paths (using absolute paths)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_dir = os.path.dirname(script_dir)
-    query_file = os.path.join(project_dir, "data", "brca1_protein_proper.fasta")
-    db_name = "brca1_demo_db"
-    output_file = os.path.join(project_dir, "results", "brca1_blast_results.txt")
+    query_file = os.path.join(project_dir, "data", "egfr_protein.fasta")
+    db_name = "egfr_demo_db"
+    output_file = os.path.join(project_dir, "results", "egfr_blast_results.txt")
 
     # Ensure results directory exists
     results_dir = os.path.join(project_dir, "results")

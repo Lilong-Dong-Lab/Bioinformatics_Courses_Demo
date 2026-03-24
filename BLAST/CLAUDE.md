@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a bioinformatics educational project demonstrating BLAST (Basic Local Alignment Search Tool) usage for protein sequence analysis, specifically using the BRCA1 protein sequence. The project is designed for teaching bioinformatics concepts and practical command-line BLAST operations.
+This is a bioinformatics educational project demonstrating BLAST (Basic Local Alignment Search Tool) usage for protein sequence analysis. The primary demo uses the **EGFR kinase domain** (Epidermal Growth Factor Receptor), a key target for non-small cell lung cancer (NSCLC) drugs.
+
+> **Aligned with course materials**: This demo is designed to match lecture content on bioinformatics tools in drug discovery, where EGFR is used as the primary case study for demonstrating sequence analysis.
 
 ## Environment Setup
 
@@ -35,8 +37,8 @@ pixi run verify-blast          # Verify BLAST installation
 pixi run run-blast
 
 # Individual BLAST operations
-pixi exec makeblastdb -in data/brca1_protein_proper.fasta -dbtype prot -out demo_db
-pixi exec blastp -query data/brca1_protein_proper.fasta -db demo_db -out results.txt -outfmt 6
+pixi exec makeblastdb -in data/egfr_protein.fasta -dbtype prot -out egfr_demo_db
+pixi exec blastp -query data/egfr_protein.fasta -db egfr_demo_db -out results.txt -outfmt 6
 ```
 
 ### Remote BLAST Operations
@@ -121,7 +123,9 @@ The project contains multiple Python scripts demonstrating different BLAST appro
    - Parses XML results automatically
 
 ### Data Structure
-- **`data/`**: Input FASTA files (BRCA1 protein sequences)
+- **`data/`**: Input FASTA files
+  - **`egfr_protein.fasta`**: EGFR kinase domain (residues 714-950, primary demo)
+  - **`brca1_*.fasta`**: BRCA1 sequences (alternative examples)
 - **`results/`**: Generated BLAST results and databases
 - **Scripts use absolute path resolution** to handle execution from different directories
 
@@ -182,12 +186,18 @@ The project demonstrates and documents known limitations:
 ## Educational Focus
 
 This project is designed for teaching bioinformatics concepts:
-- BRCA1 protein domain analysis (RING finger domain)
+- **EGFR kinase domain analysis** (drug target for NSCLC)
 - Local vs remote BLAST trade-offs
 - Command-line bioinformatics workflows
 - Result interpretation (E-values, identity percentages)
 - Rate limiting and API best practices
 - Path resolution and script portability
+
+### EGFR Background
+- **UniProt**: P00533
+- **Domain**: Kinase domain (residues 714-950)
+- **Clinical relevance**: Target for gefitinib, erlotinib, osimertinib
+- **PDB Reference**: 2ITO (EGFR kinase domain with erlotinib)
 
 ## File Management
 - **Local databases** are created in project root during execution

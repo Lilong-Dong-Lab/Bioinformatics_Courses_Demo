@@ -11,7 +11,10 @@ python = ">=3.10.0"
 biopython = ">=1.86,<2"
 
 [tasks]
+# Verify BLAST+ installation
 verify-blast = "blastp -version"
+
+# Main demo: EGFR kinase domain BLAST (aligned with lecture materials)
 run-blast = "python scripts/run_blast_cli.py"
 run-remote-blast = "python scripts/remote_blast_demo.py"
 run-biopython-blast = "python scripts/biopython_remote_blast.py"

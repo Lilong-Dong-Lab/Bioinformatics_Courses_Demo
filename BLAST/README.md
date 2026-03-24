@@ -1,6 +1,8 @@
-# BRCA1 BLAST Demonstration
+# EGFR BLAST Demonstration
 
-This project demonstrates how to use the NCBI BLAST+ command-line tools for protein sequence analysis, specifically using the BRCA1 (Breast Cancer 1) protein sequence as an example.
+This project demonstrates how to use the NCBI BLAST+ command-line tools for protein sequence analysis, specifically using the **EGFR (Epidermal Growth Factor Receptor)** kinase domain as an example.
+
+> **Note**: EGFR is a key target for non-small cell lung cancer (NSCLC) drugs such as gefitinib, erlotinib, and osimertinib. This demo is aligned with lecture materials on bioinformatics tools in drug discovery.
 
 ## 🎯 Project Overview
 
@@ -21,14 +23,16 @@ BIOINFO_Demo_BLAST/
 ├── pixi.toml              # Pixi environment configuration
 ├── README.md              # This file
 ├── data/                  # Input data files
-│   ├── brca1_protein_proper.fasta    # BRCA1 protein sequence
-│   ├── brca1_protein.fasta           # Additional BRCA1 sequence
-│   └── brca1_sequence.fasta          # Original BRCA1 sequence
+│   ├── egfr_protein.fasta             # EGFR kinase domain (primary demo)
+│   ├── brca1_protein_proper.fasta     # BRCA1 sequence (alternative)
+│   ├── brca1_protein.fasta            # Additional BRCA1 sequence
+│   └── brca1_sequence.fasta           # Original BRCA1 sequence
 ├── scripts/               # Analysis scripts
-│   └── run_blast_cli.py   # Main BLAST demonstration script
+│   ├── run_blast_cli.py           # Main BLAST demonstration script
+│   └── biopython_remote_blast.py  # BioPython remote BLAST demo
 └── results/               # Output files (created during execution)
-    ├── brca1_blast_results.txt       # BLAST search results
-    └── brca1_demo_db.*              # Local BLAST database files
+    ├── egfr_blast_results.txt      # BLAST search results
+    └── egfr_demo_db.*              # Local BLAST database files
 ```
 
 ## 🚀 Getting Started
@@ -68,7 +72,7 @@ pixi run run-blast
 
 This script will:
 1. Check BLAST+ tool availability
-2. Create a local BLAST database from the BRCA1 sequence
+2. Create a local BLAST database from the EGFR sequence
 3. Perform a local BLAST search
 4. Parse and display results
 5. Show remote BLAST examples
@@ -79,12 +83,12 @@ You can also run BLAST commands directly:
 
 1. **Create a local database:**
    ```bash
-   pixi exec makeblastdb -in data/brca1_protein_proper.fasta -dbtype prot -out brca1_demo_db
+   pixi exec makeblastdb -in data/egfr_protein.fasta -dbtype prot -out egfr_demo_db
    ```
 
 2. **Run BLAST search:**
    ```bash
-   pixi exec blastp -query data/brca1_protein_proper.fasta -db brca1_demo_db -out results.txt -outfmt 6
+   pixi exec blastp -query data/egfr_protein.fasta -db egfr_demo_db -out results.txt -outfmt 6
    ```
 
 3. **View results:**
@@ -140,19 +144,24 @@ For comprehensive searches against NCBI databases:
 ### Command Line (Remote)
 ```bash
 # Protein BLAST against NCBI nr database
-pixi exec blastp -query data/brca1_protein_proper.fasta -db nr -remote -out remote_results.xml
+pixi exec blastp -query data/egfr_protein.fasta -db nr -remote -out remote_results.xml
 
 # Requires internet connection and may have usage limits
 ```
 
 ## 📚 Educational Notes
 
-### About BRCA1
+### About EGFR
 
-- **Gene**: BRCA1 (Breast Cancer 1)
-- **Function**: Tumor suppressor protein
-- **Domain**: RING finger domain (demonstrated in this example)
-- **Clinical relevance**: Mutations associated with increased breast/ovarian cancer risk
+- **Gene**: EGFR (Epidermal Growth Factor Receptor)
+- **Function**: Receptor tyrosine kinase involved in cell growth and differentiation
+- **Domain**: Kinase domain (residues 714-950, demonstrated in this example)
+- **Clinical relevance**: Target for NSCLC drugs (gefitinib, erlotinib, osimertinib)
+- **UniProt**: P00533
+
+### Alternative: BRCA1 Demo
+
+BRCA1 sequences are also available in the `data/` directory for breast cancer research demonstrations.
 
 ### BLAST Principles
 
