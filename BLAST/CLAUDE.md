@@ -18,12 +18,14 @@ pixi run verify-blast          # Verify BLAST installation
 ```
 
 ### Available Tools
+
 - **BLAST+ 2.16.0+**: Complete NCBI BLAST suite (blastp, blastn, makeblastdb, etc.)
 - **Python 3.10+**: For automation scripts
 - **BioPython 1.86+**: For programmatic BLAST operations
 - **Pandas**: For result analysis and CSV generation (in BioPython scripts)
 
 ### Pixi Tasks (from pixi.toml)
+
 - `pixi run verify-blast` - Check BLAST+ installation
 - `pixi run run-blast` - Run main local BLAST demonstration
 - `pixi run run-remote-blast` - Run command-line remote BLAST demonstration
@@ -32,6 +34,7 @@ pixi run verify-blast          # Verify BLAST installation
 ## Core Commands
 
 ### Local BLAST Operations
+
 ```bash
 # Main demonstration (creates local DB, runs BLAST, parses results)
 pixi run run-blast
@@ -42,6 +45,7 @@ pixi exec blastp -query data/egfr_protein.fasta -db egfr_demo_db -out results.tx
 ```
 
 ### Remote BLAST Operations
+
 ```bash
 # Command-line remote BLAST (may face rate limiting)
 pixi run run-remote-blast
@@ -51,6 +55,7 @@ pixi run run-biopython-blast
 ```
 
 ### Direct BLAST Tool Access
+
 ```bash
 pixi exec blastp -version        # Check BLAST version
 pixi exec blastn -version        # Check nucleotide BLAST
@@ -90,12 +95,14 @@ pixi exec makeblastdb -help      # Database creation help
 ### Choosing Local vs Remote BLAST
 
 **Use Local BLAST when:**
+
 - Testing and learning (fast, no rate limits)
 - Working with private/custom sequences
 - Running many queries
 - You can create local databases
 
 **Use Remote BLAST when:**
+
 - Need comprehensive NCBI databases (nr, nt, refseq)
 - One-off queries
 - Don't want to download large databases locally
@@ -104,6 +111,7 @@ pixi exec makeblastdb -help      # Database creation help
 ## Project Architecture
 
 ### Script Organization
+
 The project contains multiple Python scripts demonstrating different BLAST approaches:
 
 1. **`run_blast_cli.py`**: Primary local BLAST demonstration
@@ -123,14 +131,16 @@ The project contains multiple Python scripts demonstrating different BLAST appro
    - Parses XML results automatically
 
 ### Data Structure
+
 - **`data/`**: Input FASTA files
   - **`egfr_protein.fasta`**: EGFR kinase domain (residues 714-950, primary demo)
-  - **`brca1_*.fasta`**: BRCA1 sequences (alternative examples)
 - **`results/`**: Generated BLAST results and databases
 - **Scripts use absolute path resolution** to handle execution from different directories
 
 ### BLAST Result Formats
+
 The project primarily uses tabular format (outfmt 6) with these columns:
+
 1. Query ID
 2. Subject ID
 3. % Identity
@@ -145,6 +155,7 @@ The project primarily uses tabular format (outfmt 6) with these columns:
 12. Bit Score (alignment quality)
 
 **Available Output Formats:**
+
 - `outfmt 6` - Tabular (used in CLI scripts)
 - `outfmt 5` - XML (used in BioPython results)
 - `outfmt 0` - Pairwise (default text alignment)
@@ -152,7 +163,9 @@ The project primarily uses tabular format (outfmt 6) with these columns:
 ## Key Implementation Details
 
 ### Path Handling
+
 Scripts resolve paths dynamically to work regardless of execution location:
+
 ```python
 script_dir = os.path.dirname(os.path.abspath(__file__))
 project_dir = os.path.dirname(script_dir)
@@ -160,7 +173,9 @@ query_file = os.path.join(project_dir, "data", "sequence.fasta")
 ```
 
 ### BLAST Database Files
+
 When creating databases with `makeblastdb`, multiple index files are generated:
+
 - `.phr` - BLAST database header
 - `.pin` - BLAST database index
 - `.psq` - BLAST database sequences
@@ -169,7 +184,9 @@ When creating databases with `makeblastdb`, multiple index files are generated:
 **Do not delete or modify these files manually** - they are required for BLAST searches.
 
 ### Error Handling
+
 All scripts include comprehensive error handling for:
+
 - Missing input files (exit with code 1)
 - BLAST command failures (subprocess error handling)
 - Network connectivity issues (remote BLAST with retries)
@@ -177,7 +194,9 @@ All scripts include comprehensive error handling for:
 - Rate limiting (documented in remote_blast_demo.py)
 
 ### Remote BLAST Limitations
+
 The project demonstrates and documents known limitations:
+
 - NCBI rate limiting for command-line remote BLAST
 - "search aborted by Entrez" errors (see REMOTE_BLAST_GUIDE.md)
 - Alternative web-based solutions (NCBI web interface, EMBL-EBI)
@@ -186,6 +205,7 @@ The project demonstrates and documents known limitations:
 ## Educational Focus
 
 This project is designed for teaching bioinformatics concepts:
+
 - **EGFR kinase domain analysis** (drug target for NSCLC)
 - Local vs remote BLAST trade-offs
 - Command-line bioinformatics workflows
@@ -194,12 +214,14 @@ This project is designed for teaching bioinformatics concepts:
 - Path resolution and script portability
 
 ### EGFR Background
+
 - **UniProt**: P00533
 - **Domain**: Kinase domain (residues 714-950)
 - **Clinical relevance**: Target for gefitinib, erlotinib, osimertinib
 - **PDB Reference**: 2ITO (EGFR kinase domain with erlotinib)
 
 ## File Management
+
 - **Local databases** are created in project root during execution
 - **Results are timestamped** to avoid overwriting (format: YYYYMMDD_HHMMSS)
 - **XML and CSV outputs** are available for further analysis
@@ -208,6 +230,7 @@ This project is designed for teaching bioinformatics concepts:
 - **Don't commit** generated database files (.pdb, .phr, .pin, etc.) - already in .gitignore
 
 ## Related Documentation
+
 - **README.md** - Main project documentation and user guide
 - **REMOTE_BLAST_GUIDE.md** - Comprehensive remote BLAST options and troubleshooting
 - **REFERENCES/** - Additional course materials (if available)

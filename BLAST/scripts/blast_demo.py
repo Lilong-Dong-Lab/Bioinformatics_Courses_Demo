@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 """
-BRCA1 BLAST Demo Script
-======================
+EGFR BLAST Demo Script (Legacy - Extended Visualization Example)
+================================================================
+
+[DEPRECATED] This script is a legacy example with visualization features.
+For the primary demo, use run_blast_cli.py or biopython_remote_blast.py instead.
 
 This script demonstrates how to use BioPython to perform BLAST searches
-on the BRCA1 protein sequence using NCBI's online BLAST service.
+with pandas DataFrames and matplotlib visualizations.
 
 Author: Bioinformatics Course Demo
 Date: 2025-11-14
+Updated: 2026-03-24 (added deprecation notice, path fixes)
 """
 
 import sys
 import time
+import os
 from pathlib import Path
+
+# Resolve project paths (works regardless of execution directory)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
+
 from Bio.Blast import NCBIWWW
 from Bio import SeqIO
 from Bio.Blast import NCBIXML
@@ -52,11 +62,11 @@ def perform_blast_search(sequence, database="nr", program="blastp", max_results=
     Returns:
         str: BLAST results in XML format
     """
-    print(f"\n🔍 Performing BLAST search...")
+    print("\n🔍 Performing BLAST search...")
     print(f"  Program: {program}")
     print(f"  Database: {database}")
     print(f"  Query sequence length: {len(sequence.seq)}")
-    print(f"  This may take 30-60 seconds...")
+    print("  This may take 30-60 seconds...")
 
     try:
         # Perform BLAST search
@@ -70,16 +80,16 @@ def perform_blast_search(sequence, database="nr", program="blastp", max_results=
         )
 
         # Save raw results
-        timestamp = time.strftime("%Y%m%d_%H%M%S")
-        output_file = f"../results/blast_results_{timestamp}.xml"
+        results_dir = os.path.join(PROJECT_DIR, "results")
+        Path(results_dir).mkdir(exist_ok=True)
 
-        # Ensure results directory exists
-        Path("../results").mkdir(exist_ok=True)
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        output_file = os.path.join(results_dir, f"blast_results_{timestamp}.xml")
 
         with open(output_file, "w") as f:
             f.write(result_handle.read())
 
-        print(f"✓ BLAST search completed successfully!")
+        print("✓ BLAST search completed successfully!")
         print(f"  Results saved to: {output_file}")
 
         # Reset handle position for reading
@@ -100,7 +110,7 @@ def parse_blast_results(result_handle):
     Returns:
         list: List of BLAST hits with key information
     """
-    print(f"\n📊 Parsing BLAST results...")
+    print("\n📊 Parsing BLAST results...")
 
     blast_records = list(NCBIXML.parse(result_handle))
     if not blast_records:
@@ -150,7 +160,7 @@ def create_summary_table(hits_data):
     if not hits_data:
         return
 
-    print(f"\n📋 BLAST Results Summary:")
+    print("\n📋 BLAST Results Summary:")
     print("=" * 100)
 
     # Create DataFrame for better formatting
@@ -166,8 +176,11 @@ def create_summary_table(hits_data):
               'query_coverage_formatted', 'hit_description']].to_string(index=False))
 
     # Save detailed results
+    results_dir = os.path.join(PROJECT_DIR, "results")
+    Path(results_dir).mkdir(exist_ok=True)
+
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    csv_file = f"../results/blast_summary_{timestamp}.csv"
+    csv_file = os.path.join(results_dir, f"blast_summary_{timestamp}.csv")
     df.to_csv(csv_file, index=False)
     print(f"\n💾 Detailed results saved to: {csv_file}")
 
@@ -181,11 +194,11 @@ def plot_blast_results(hits_data):
     if not hits_data:
         return
 
-    print(f"\n📈 Creating BLAST result visualizations...")
+    print("\n📈 Creating BLAST result visualizations...")
 
     # Create figure with subplots
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
-    fig.suptitle('BRCA1 BLAST Results Analysis', fontsize=16, fontweight='bold')
+    fig.suptitle('EGFR BLAST Results Analysis', fontsize=16, fontweight='bold')
 
     df = pd.DataFrame(hits_data)
 
@@ -223,8 +236,11 @@ def plot_blast_results(hits_data):
     plt.tight_layout()
 
     # Save plot
+    results_dir = os.path.join(PROJECT_DIR, "results")
+    Path(results_dir).mkdir(exist_ok=True)
+
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    plot_file = f"../results/blast_analysis_{timestamp}.png"
+    plot_file = os.path.join(results_dir, f"blast_analysis_{timestamp}.png")
     plt.savefig(plot_file, dpi=300, bbox_inches='tight')
     print(f"📊 Visualization saved to: {plot_file}")
 
@@ -236,15 +252,20 @@ def plot_blast_results(hits_data):
 
 def main():
     """
-    Main function to run the BRCA1 BLAST demonstration.
+    Main function to run the EGFR BLAST demonstration.
     """
-    print("🧬 BRCA1 BLAST Demonstration")
+    print("🧬 EGFR BLAST Demonstration (Legacy)")
     print("=" * 50)
-    print("This script demonstrates BLAST analysis of the BRCA1 protein")
+    print("[NOTE] This is a legacy script. For primary demos, use:")
+    print("       - run_blast_cli.py (local BLAST)")
+    print("       - biopython_remote_blast.py (remote BLAST)")
+    print()
+    print("This script demonstrates BLAST analysis of the EGFR protein")
     print("using BioPython and NCBI's online BLAST service.")
 
-    # Load BRCA1 sequence
-    fasta_file = "../data/brca1_protein.fasta"
+    # Load EGFR sequence with absolute path
+    data_dir = Path(PROJECT_DIR) / "data"
+    fasta_file = data_dir / "egfr_protein.fasta"
     sequence = load_sequence(fasta_file)
 
     if sequence is None:
@@ -267,8 +288,8 @@ def main():
     # Create visualizations
     plot_blast_results(hits_data)
 
-    print(f"\n✅ BLAST demonstration completed successfully!")
-    print(f"📁 All results saved to the 'results' directory.")
+    print("\n✅ BLAST demonstration completed successfully!")
+    print("📁 All results saved to the 'results' directory.")
 
     # Close the result handle
     result_handle.close()

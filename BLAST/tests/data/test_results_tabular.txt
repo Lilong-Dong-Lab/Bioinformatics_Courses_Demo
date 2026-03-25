@@ -1,0 +1,3 @@
+query_test	gi|123456789|ref|NP_001234.1|	Test protein Homo sapiens	100.00	18	0	0	1	18	1	18	2e-10	40.0
+query_test	gi|987654321|ref|NP_005678.1|	Similar protein Mus musculus	95.00	18	1	0	1	18	1	18	1e-08	38.0
+query_test	gi|111111111|ref|NP_009999.1|	Related protein Rattus norvegicus	90.00	18	2	0	1	18	1	18	5e-07	35.0

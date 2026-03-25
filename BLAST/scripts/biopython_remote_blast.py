@@ -25,10 +25,12 @@ try:
     from Bio.Blast import NCBIWWW
     from Bio import SeqIO
     from Bio.Blast import NCBIXML
+
     BIOPYTHON_AVAILABLE = True
 except ImportError:
     print("BioPython not available. Install with: pixi add biopython")
     BIOPYTHON_AVAILABLE = False
+
 
 def load_sequence(fasta_file):
     """Load protein sequence from FASTA file."""
@@ -41,13 +43,14 @@ def load_sequence(fasta_file):
         print(f"✗ Error loading sequence: {e}")
         return None
 
+
 def run_biopython_blast(sequence, database="nr", max_results=10):
     """Run BLAST using BioPython's NCBIWWW module."""
-    print(f"\n🌐 Running BioPython Remote BLAST...")
+    print("\n🌐 Running BioPython Remote BLAST...")
     print(f"  Database: {database}")
     print(f"  Query length: {len(sequence.seq)}")
     print(f"  Max results: {max_results}")
-    print(f"  This may take 1-3 minutes...")
+    print("  This may take 1-3 minutes...")
 
     # Set email (required by NCBI)
     NCBIWWW.email = "bioinfo.demo@example.com"
@@ -60,21 +63,25 @@ def run_biopython_blast(sequence, database="nr", max_results=10):
             sequence=sequence.seq,
             hitlist_size=max_results,
             expect=0.001,
-            format_type="XML"
+            format_type="XML",
         )
 
-        print(f"✓ BLAST search completed!")
+        print("✓ BLAST search completed!")
         return result_handle
 
     except Exception as e:
         print(f"✗ Error during BLAST search: {e}")
         return None
 
+
 def parse_biopython_results(result_handle):
     """Parse and display BLAST results."""
-    print(f"\n📊 Parsing BLAST Results...")
+    print("\n📊 Parsing BLAST Results...")
 
     try:
+        # Reset stream position in case it was read before
+        result_handle.seek(0)
+
         blast_records = list(NCBIXML.parse(result_handle))
         if not blast_records:
             print("✗ No BLAST records found")
@@ -91,9 +98,11 @@ def parse_biopython_results(result_handle):
             print("  No significant hits found.")
             return []
 
-        print(f"\n📋 Top BLAST Hits:")
+        print("\n📋 Top BLAST Hits:")
         print("-" * 100)
-        print(f"{'Rank':<5} {'Accession':<15} {'Description':<30} {'% Identity':<12} {'E-value':<12}")
+        print(
+            f"{'Rank':<5} {'Accession':<15} {'Description':<30} {'% Identity':<12} {'E-value':<12}"
+        )
         print("-" * 100)
 
         for i, alignment in enumerate(record.alignments[:10]):
@@ -111,17 +120,21 @@ def parse_biopython_results(result_handle):
             # Truncate description for display
             short_desc = hit_def[:30] + "..." if len(hit_def) > 30 else hit_def
 
-            hits_data.append({
-                'rank': i + 1,
-                'accession': accession,
-                'description': hit_def,
-                'length': length,
-                'e_value': e_value,
-                'bit_score': score,
-                'percent_identity': percent_identity
-            })
+            hits_data.append(
+                {
+                    "rank": i + 1,
+                    "accession": accession,
+                    "description": hit_def,
+                    "length": length,
+                    "e_value": e_value,
+                    "bit_score": score,
+                    "percent_identity": percent_identity,
+                }
+            )
 
-            print(f"{i+1:<5} {accession:<15} {short_desc:<30} {percent_identity:<12.1f} {e_value:<12.2e}")
+            print(
+                f"{i + 1:<5} {accession:<15} {short_desc:<30} {percent_identity:<12.1f} {e_value:<12.2e}"
+            )
 
         return hits_data
 
@@ -129,13 +142,15 @@ def parse_biopython_results(result_handle):
         print(f"✗ Error parsing results: {e}")
         return []
 
+
 def save_results(result_handle, hits_data, timestamp):
     """Save BLAST results to files."""
     try:
-        # Save raw XML
+        # Save raw XML - reset stream position first
         results_dir = "../results"
         Path(results_dir).mkdir(exist_ok=True)
 
+        result_handle.seek(0)
         xml_file = f"{results_dir}/biopython_blast_{timestamp}.xml"
         with open(xml_file, "w") as f:
             f.write(result_handle.read())
@@ -143,15 +158,17 @@ def save_results(result_handle, hits_data, timestamp):
         # Save summary
         if hits_data:
             import pandas as pd
+
             df = pd.DataFrame(hits_data)
             csv_file = f"{results_dir}/biopython_blast_summary_{timestamp}.csv"
             df.to_csv(csv_file, index=False)
-            print(f"\n💾 Results saved:")
+            print("\n💾 Results saved:")
             print(f"  XML: {xml_file}")
             print(f"  CSV: {csv_file}")
 
     except Exception as e:
         print(f"✗ Error saving results: {e}")
+
 
 def main():
     """Main function to run BioPython BLAST demonstration."""
@@ -196,7 +213,8 @@ def main():
     # Close handle
     result_handle.close()
 
-    print(f"\n✅ BioPython BLAST demonstration completed!")
+    print("\n✅ BioPython BLAST demonstration completed!")
+
 
 if __name__ == "__main__":
     main()

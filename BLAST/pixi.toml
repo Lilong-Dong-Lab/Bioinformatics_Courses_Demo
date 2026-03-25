@@ -9,6 +9,13 @@ version = "0.1.0"
 blast = ">=2.15.0"
 python = ">=3.10.0"
 biopython = ">=1.86,<2"
+pandas = ">=2.0.0"
+matplotlib = ">=3.8.0"
+
+# Testing dependencies
+pytest = ">=8.0.0"
+pytest-mock = ">=3.12.0"
+pytest-cov = ">=4.1.0"
 
 [tasks]
 # Verify BLAST+ installation
@@ -18,3 +25,10 @@ verify-blast = "blastp -version"
 run-blast = "python scripts/run_blast_cli.py"
 run-remote-blast = "python scripts/remote_blast_demo.py"
 run-biopython-blast = "python scripts/biopython_remote_blast.py"
+
+# Testing tasks
+test = "pytest tests/ -v"
+test-cov = "pytest tests/ -v --cov=scripts --cov-report=term-missing"
+test-verbose = "pytest tests/ -v -s --tb=long"
+test-cli = "pytest tests/test_run_blast_cli.py -v"
+test-biopython = "pytest tests/test_biopython_remote_blast.py -v"
