@@ -20,3 +20,9 @@ __pycache__/
 results/*.txt
 results/*.xml
 results/*.csv
+
+# Coverage reports
+.coverage
+
+# Parent results directory (generated)
+results/
