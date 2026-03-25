@@ -1,0 +1,58 @@
+[workspace]
+name = "protein_ligand_docking_analysis"
+version = "0.1.0"
+description = "Protein-ligand docking analysis using TeachOpenCADD materials"
+channels = ["conda-forge", "bioconda"]
+platforms = ["linux-64"]
+
+[dependencies]
+# Core Python (Python 3.8 required for biopython 1.77 compatibility)
+python = ">=3.8,<3.9"
+pip = "*"
+ipython = "*"
+ipykernel = "*"
+jupyter = "*"
+notebook = "*"
+
+# Data analysis
+pandas = "*"
+numpy = "*"
+
+# Cheminformatics & Structural bioinformatics
+rdkit = "*"
+openbabel = "*"
+biopandas = "*"
+biotite = "*"
+
+# Visualization
+nglview = "*"
+matplotlib-base = "*"
+
+# Structure handling
+mdanalysis = "*"
+
+# Additional dependencies for opencadd
+bravado = "*"
+tqdm = "*"
+
+# Build tools
+setuptools = "*"
+
+# opencadd from conda-forge (requires biopython <=1.77)
+opencadd = "*"
+
+# Docking tools from bioconda
+smina = "*"
+
+[tasks]
+# Install Jupyter kernel
+install-kernel = "python -m ipykernel install --user --name=docking --display-name='Python (Docking)'"
+
+# Start Jupyter
+jupyter = "jupyter notebook"
+
+# Verify installation
+verify = "python -c \"from opencadd.structure.core import Structure; import nglview; from openbabel import pybel; print('All packages imported successfully!')\""
+
+# Run docking demo
+demo = "jupyter notebook protein_ligand_docking_EN.ipynb"
