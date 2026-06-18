@@ -18,6 +18,104 @@ This script demonstrates:
 Author: Bioinformatics Course Demo
 Date: 2025-11-14
 Updated: 2026-03-24 (aligned with lecture materials)
+
+
+CLI Commands Explained (命令行工具详解)
+======================================
+
+This script wraps two core BLAST+ CLI commands. Understanding these commands
+is essential for bioinformatics workflows.
+
+本脚本封装了两个核心BLAST+命令行工具。理解这些命令对于生物信息学分析流程至关重要。
+
+1. makeblastdb - Create Local BLAST Database (创建本地BLAST数据库)
+   ----------------------------------------------------------------
+   Command: makeblastdb -in data/egfr_protein.fasta -dbtype prot -out egfr_demo_db
+
+   Parameters explained:
+   - -in data/egfr_protein.fasta: Input FASTA file containing sequences
+     (输入FASTA格式的序列文件)
+
+   - -dbtype prot: Database type - 'prot' for protein, 'nucl' for nucleotide
+     (数据库类型: prot=蛋白质, nucl=核酸)
+
+   - -out egfr_demo_db: Output database prefix (generates .phr, .pin, .psq files)
+     (输出数据库名称前缀，生成.phr/.pin/.psq等索引文件)
+
+   Biological significance:
+   Creates a searchable database from your sequences, enabling fast local
+   alignment without internet access. Essential for custom datasets or
+   high-throughput analysis.
+   (创建可搜索的本地数据库，无需网络即可进行快速比对。适用于自定义数据集或高通量分析。)
+
+   Output files generated:
+   - egfr_demo_db.phr: Header file (头文件)
+   - egfr_demo_db.pin: Index file (索引文件)
+   - egfr_demo_db.psq: Sequence data (序列数据)
+   - Additional: .pjs, .pot, .pto, .ptf, .pdb (辅助索引文件)
+
+
+2. blastp - Protein-Protein BLAST (蛋白质-蛋白质BLAST比对)
+   ---------------------------------------------------------
+   Command: blastp -query data/egfr_protein.fasta -db egfr_demo_db -out results.txt -outfmt 6
+
+   Parameters explained:
+   - -query data/egfr_protein.fasta: Query sequence file
+     (待查询的序列文件)
+
+   - -db egfr_demo_db: Database name (created by makeblastdb)
+     (数据库名称，由makeblastdb创建)
+
+   - -out results.txt: Output file for results
+     (结果输出文件)
+
+   - -outfmt 6: Tabular format with 12 columns:
+     (表格格式输出，包含12列)
+
+     Column 1: qseqid  - Query sequence ID (查询序列ID)
+     Column 2: sseqid  - Subject sequence ID (目标序列ID)
+     Column 3: pident  - Percentage identity (序列一致性百分比)
+     Column 4: length  - Alignment length (比对长度)
+     Column 5: mismatch - Number of mismatches (错配数)
+     Column 6: gapopen - Gap openings (空位开启数)
+     Column 7: qstart  - Query start position (查询序列起始位置)
+     Column 8: qend    - Query end position (查询序列终止位置)
+     Column 9: sstart  - Subject start position (目标序列起始位置)
+     Column 10: send   - Subject end position (目标序列终止位置)
+     Column 11: evalue - E-value (期望值，统计显著性指标)
+     Column 12: bitscore - Bit score (比特得分，比对质量评分)
+
+   Biological significance:
+   E-value indicates statistical significance; lower is better.
+   Typical thresholds: evalue < 0.001 for significant hits.
+   Bit score indicates alignment quality; higher is better.
+   (E值表示统计显著性，越低越好。通常E<0.001为显著匹配。
+   Bit score表示比对质量，越高越好。)
+
+   Common outfmt options:
+   - outfmt 0: Traditional pairwise alignment (默认成对比对格式)
+   - outfmt 5: XML format (XML格式，便于程序解析)
+   - outfmt 6: Tabular (表格格式，便于分析)
+   - outfmt 7: Tabular with comments (带注释的表格格式)
+
+
+Wrapper Functions in This Script (脚本中的封装函数)
+==================================================
+
+- create_sample_database(): Wraps makeblastdb command
+  Creates local database from FASTA files
+
+- run_local_blast(): Wraps blastp command
+  Executes protein BLAST search against local database
+
+- parse_blast_results(): Parses outfmt 6 tabular results
+  Extracts and displays top hits with key metrics
+
+These wrappers add:
+- Error handling and status reporting (错误处理和状态报告)
+- Absolute path resolution (绝对路径解析)
+- Progress indicators (进度指示)
+- Result formatting (结果格式化)
 """
 
 import subprocess
